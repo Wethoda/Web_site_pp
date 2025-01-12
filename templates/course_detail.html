@@ -1,0 +1,16 @@
+<!-- Расширяем базовый шаблон base.html -->
+{% extends "base.html" %}
+
+<!-- Переопределяем блок title -->
+{% block title %}
+{{ course.title }}
+{% endblock %}
+
+<!-- Переопределяем блок content -->
+{% block content %}
+<h1>{{ course.title }}</h1>
+<p>{{ course.description }}</p>
+
+<!-- Ссылка для возврата к списку курсов -->
+<a href="{{ url_for('courses') }}">Назад к списку курсов</a>
+{% endblock %}

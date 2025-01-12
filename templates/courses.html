@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Курсы
+{% endblock %}
+
+{% block content %}
+<h1>Наши курсы</h1>
+<ul>
+    {% for course in courses %}
+    <li>
+        <h2><a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a></h2>
+        <p>{{ course.description }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
