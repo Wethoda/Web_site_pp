@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <!-- Мета-теги для корректного отображения страницы -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Блок title, который можно переопределить в других шаблонах -->
     <title>{% block title %}Онлайн курсы для повышения квалификации{% endblock %}</title>
-
-    <!-- Подключаем CSS файл из папки static/css -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <!-- Шапка сайта -->
     <header>
         <nav>
-            <!-- Навигационное меню -->
             <ul>
                 <li><a href="{{ url_for('index') }}">Главная</a></li>
                 <li><a href="{{ url_for('show_courses') }}">Курсы</a></li>
-                <li><a href="{{ url_for('about') }}">О нас</a></li>
+                {% if 'user_id' in session and session.get('role') == 'admin' %}
+                    <li><a href="{{ url_for('show_add_course_form') }}">Добавить курс</a></li>
+                {% endif %}
+                {% if 'user_id' in session %}
+                    <li><a href="{{ url_for('logout') }}">Выйти</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">Войти</a></li>
+                    <li><a href="{{ url_for('register') }}">Регистрация</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
 
-    <!-- Основное содержимое страницы -->
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Подвал сайта -->
     <footer>
         <p>&copy; 2023 Онлайн курсы для повышения квалификации</p>
     </footer>
 
-    <!-- Подключаем JavaScript файл из папки static/js -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>

@@ -6,12 +6,32 @@
 
 {% block content %}
 <h1>Наши курсы</h1>
-<ul>
+<div>
     {% for course in courses %}
-    <li>
-        <h2><a href="{{ url_for('course_detail', course_id=course.id) }}">{{ course.title }}</a></h2>
-        <p>{{ course.description }}</p>
-    </li>
+    <div class="course-card">
+        <h2><a href="{{ url_for('course_detail', course_id=course[0]) }}">{{ course[1] }}</a></h2>
+        <p><strong>Продолжительность:</strong> {{ course[2] }}</p>
+        <p><strong>Сложность:</strong> {{ course[3] }}</p>
+    </div>
     {% endfor %}
-</ul>
+</div>
+
+<!-- Кнопки пагинации -->
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="{{ url_for('show_courses', page=page-1) }}">Назад</a>
+    {% endif %}
+
+    <span>Страница {{ page }} из {{ total_pages }}</span>
+
+    {% if page < total_pages %}
+        <a href="{{ url_for('show_courses', page=page+1) }}">Вперед</a>
+    {% endif %}
+</div>
+
+<!-- Кнопка "Добавить курс" для администраторов -->
+{% if 'user_id' in session and session.get('role') == 'admin' %}
+    <a href="{{ url_for('show_add_course_form') }}">Добавить курс</a>
+{% endif %}
+
 {% endblock %}

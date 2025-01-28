@@ -1,16 +1,14 @@
-<!-- Расширяем базовый шаблон base.html -->
 {% extends "base.html" %}
 
-<!-- Переопределяем блок title -->
 {% block title %}
-{{ course.title }}
+{{ course[1] }}
 {% endblock %}
 
-<!-- Переопределяем блок content -->
 {% block content %}
-<h1>{{ course.title }}</h1>
-<p>{{ course.description }}</p>
-
-<!-- Ссылка для возврата к списку курсов -->
-<a href="{{ url_for('courses') }}">Назад к списку курсов</a>
+<h1>{{ course[1] }}</h1>
+<p><strong>Продолжительность:</strong> {{ course[2] }}</p>
+<p><strong>Сложность:</strong> {{ course[3] }}</p>
+<p><strong>Описание:</strong> {{ course[4] }}</p>
+<a href="{{ url_for('show_edit_course_form', course_id=course[0]) }}">Редактировать курс</a>
+<a href="{{ url_for('show_courses') }}">Назад к списку курсов</a>
 {% endblock %}

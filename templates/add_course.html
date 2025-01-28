@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Добавить курс
+{% endblock %}
+
+{% block content %}
+<h1>Добавить курс</h1>
+<form method="POST" action="{{ url_for('add_course_form') }}">
+    <div>
+        <label for="title">Название курса:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="duration">Продолжительность:</label>
+        <input type="text" id="duration" name="duration" required>
+    </div>
+    <div>
+        <label for="difficulty">Сложность:</label>
+        <select id="difficulty" name="difficulty" required>
+            <option value="Начинающий">Начинающий</option>
+            <option value="Средний">Средний</option>
+            <option value="Тяжелый">Тяжелый</option>
+        </select>
+    </div>
+    <div>
+        <label for="description">Описание курса:</label>
+        <textarea id="description" name="description" required></textarea>
+    </div>
+    <div>
+        <button type="submit">Добавить курс</button>
+    </div>
+</form>
+<a href="{{ url_for('show_courses') }}">Назад к списку курсов</a>
+{% endblock %}

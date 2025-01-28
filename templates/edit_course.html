@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+Редактировать курс
+{% endblock %}
+
+{% block content %}
+<h1>Редактировать курс</h1>
+<form method="POST" action="{{ url_for('edit_course', course_id=course[0]) }}">
+    <div>
+        <label for="title">Название курса:</label>
+        <input type="text" id="title" name="title" value="{{ course[1] }}" required>
+    </div>
+    <div>
+        <label for="duration">Продолжительность:</label>
+        <input type="text" id="duration" name="duration" value="{{ course[2] }}" required>
+    </div>
+    <div>
+        <label for="difficulty">Сложность:</label>
+        <select id="difficulty" name="difficulty" required>
+            <option value="Начинающий" {% if course[3] == "Начинающий" %} selected {% endif %}>Начинающий</option>
+            <option value="Средний" {% if course[3] == "Средний" %} selected {% endif %}>Средний</option>
+            <option value="Тяжелый" {% if course[3] == "Тяжелый" %} selected {% endif %}>Тяжелый</option>
+        </select>
+    </div>
+    <div>
+        <label for="description">Описание курса:</label>
+        <textarea id="description" name="description" required>{{ course[4] }}</textarea>
+    </div>
+    <div>
+        <button type="submit">Сохранить изменения</button>
+    </div>
+</form>
+<a href="{{ url_for('show_courses') }}">Назад к списку курсов</a>
+{% endblock %}

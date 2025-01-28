@@ -44,15 +44,71 @@ main {
     padding: 20px; /* Внутренние отступы */
     max-width: 800px; /* Максимальная ширина контента */
     margin: 0 auto; /* Выравнивание по центру */
+    padding-bottom: 100px;
 }
 
 /* Стили для подвала */
 footer {
+    position: fixed; /* Фиксируем элемент */
     background-color: #333; /* Цвет фона подвала */
     color: white; /* Цвет текста в подвале */
     text-align: center; /* Выравнивание текста по центру */
     padding: 10px 0; /* Внутренние отступы */
-    position: fixed; /* Фиксированное положение */
     width: 100%; /* Ширина на всю страницу */
-    bottom: 0; /* Прижимаем к нижней части страницы */
+    bottom: 0; /* Прижимаем к нижней части экрана */
+    z-index: 1000; /* Указываем высокий слой, чтобы перекрыть другие элементы */
+}
+
+.course-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.course-card h2 {
+    margin-top: 0;
+    color: #007BFF;
+}
+
+.course-card p {
+    color: #555;
+}
+
+.course-card p {
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.course-card a:hover {
+    text-decoration: underline;
+}
+
+/* Стили для пагинации */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 4px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 8px 16px;
+    margin: 0 4px;
+    color: #333;
 }
