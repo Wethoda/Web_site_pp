@@ -24,6 +24,15 @@
         </select>
     </div>
     <div>
+        <label for="category">Сложность:</label>
+        <select id="category" name="category" required>
+            <option value="Программирование" {% if course[5] == "Программирование" %} selected {% endif %}>Программирование</option>
+            <option value="Дизайн" {% if course[5] == "Дизайн" %} selected {% endif %}>Дизайн</option>
+            <option value="Маркетинг" {% if course[5] == "Маркетинг" %} selected {% endif %}>Маркетинг</option>
+            <option value="Аналитика" {% if course[5] == "Аналитика" %} selected {% endif %}>Аналитика</option>
+        </select>
+    </div>
+    <div>
         <label for="description">Описание курса:</label>
         <textarea id="description" name="description" required>{{ course[4] }}</textarea>
     </div>

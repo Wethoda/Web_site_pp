@@ -37,21 +37,21 @@ def get_course_by_id(course_id):
     return course
 
 # Функция для добавления курса
-def add_course(title, duration, difficulty, description):
+def add_course(title, duration, difficulty, category, description):
     conn = sqlite3.connect('courses.db')
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO courses(title, duration, difficulty, description) VALUES (?, ?, ?, ?)",
-                   (title, duration, difficulty, description,))
+    cursor.execute("INSERT INTO courses(title, duration, difficulty, category, description) VALUES (?, ?, ?, ?, ?)",
+                   (title, duration, difficulty, category, description,))
     conn.commit()
     conn.close()
 
-def update_course(course_id, title, duration, difficulty, description):
+def update_course(course_id, title, duration, difficulty, category, description):
     conn = sqlite3.connect('courses.db')
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE courses
-        SET title = ?, duration = ?, difficulty = ?, description = ?
-        WHERE id = ?''', (title, duration, difficulty, description, course_id))
+        SET title = ?, duration = ?, difficulty = ?, category = ?, description = ?
+        WHERE id = ?''', (title, duration, difficulty, category, description, course_id))
     conn.commit()
     conn.close()
 
@@ -80,13 +80,52 @@ def index():
 
 # Маршрут для страницы со списком курсов
 @app.route('/courses')
+@app.route('/courses')
 def show_courses():
     page = request.args.get('page', 1, type=int)  # Получаем номер страницы из запроса
-    courses = get_courses(page)  # Получаем курсы для текущей страницы
-    total_courses = get_total_courses()  # Получаем общее количество курсов
-    total_pages = (total_courses + COURSES_PER_PAGE - 1) // COURSES_PER_PAGE  # Вычисляем общее количество страниц
+    query = request.args.get('query', '').strip()  # Получаем поисковый запрос
+    category = request.args.get('category', '').strip()  # Получаем категорию
+
+    conn = sqlite3.connect('courses.db')
+    cursor = conn.cursor()
+
+    # Базовый SQL-запрос
+    sql = 'SELECT * FROM courses WHERE 1=1'
+    params = []
+
+    # Добавляем условия поиска, если они есть
+    if query:
+        sql += ' AND title LIKE ?'
+        params.append(f'%{query}%')
+
+    if category:
+        sql += ' AND category = ?'
+        params.append(category)
+
+    # Добавляем пагинацию
+    offset = (page - 1) * COURSES_PER_PAGE
+    sql += ' LIMIT ? OFFSET ?'
+    params.extend([COURSES_PER_PAGE, offset])
+
+    # Выполняем запрос
+    cursor.execute(sql, params)
+    courses = cursor.fetchall()
+
+    # Получаем общее количество курсов для пагинации
+    cursor.execute('SELECT COUNT(*) FROM courses WHERE 1=1' + (' AND title LIKE ?' if query else '') + (
+        ' AND category = ?' if category else ''), params[:-2])
+    total_courses = cursor.fetchone()[0]
+    total_pages = (total_courses + COURSES_PER_PAGE - 1) // COURSES_PER_PAGE
+
+    conn.close()
 
     return render_template('courses.html', courses=courses, page=page, total_pages=total_pages)
+
+@app.route('/search')
+def search_courses():
+    query = request.args.get('query', '').strip()  # Получаем поисковый запрос
+    category = request.args.get('category', '').strip()  # Получаем категорию
+    return redirect(url_for('show_courses', query=query, category=category, page=1))
 
 # Маршрут для страницы с деталями курса
 @app.route('/course/<int:course_id>')
@@ -113,10 +152,11 @@ def add_course_form():
 
     title = request.form['title']
     duration = request.form['duration']
-    difficulty = request.form['difficulty']  # Убедитесь, что это поле есть в форме
+    difficulty = request.form['difficulty']
+    category = request.form['category']
     description = request.form['description']
 
-    add_course(title, duration, difficulty, description)
+    add_course(title, duration, difficulty, category, description)
     flash("Курс успешно добавлен", 'success')
     return redirect(url_for('show_courses'))
 
@@ -139,9 +179,10 @@ def edit_course(course_id):
     title = request.form['title']
     duration = request.form['duration']
     difficulty = request.form['difficulty']
+    category = request.form['category']
     description = request.form['description']
 
-    update_course(course_id, title, duration, difficulty, description)
+    update_course(course_id, title, duration, difficulty, category, description)
     flash('Успешно вы изменил курс', 'success')
     return redirect(url_for('show_courses'))
 

@@ -6,12 +6,28 @@
 
 {% block content %}
 <h1>Наши курсы</h1>
+
+<!-- Форма поиска -->
+<form action="{{ url_for('search_courses') }}" method="GET" class="search-form">
+    <input type="text" name="query" placeholder="Поиск по названию" value="{{ request.args.get('query', '') }}">
+    <select name="category">
+        <option value="">Все категории</option>
+        <option value="Программирование" {% if request.args.get('category') == 'Программирование' %}selected{% endif %}>Программирование</option>
+        <option value="Дизайн" {% if request.args.get('category') == 'Дизайн' %}selected{% endif %}>Дизайн</option>
+        <option value="Маркетинг" {% if request.args.get('category') == 'Маркетинг' %}selected{% endif %}>Маркетинг</option>
+        <option value="Аналитика" {% if request.args.get('category') == 'Аналитика' %}selected{% endif %}>Аналитика</option>
+    </select>
+    <button type="submit">Найти</button>
+</form>
+
+<!-- Список курсов -->
 <div>
     {% for course in courses %}
     <div class="course-card">
         <h2><a href="{{ url_for('course_detail', course_id=course[0]) }}">{{ course[1] }}</a></h2>
         <p><strong>Продолжительность:</strong> {{ course[2] }}</p>
         <p><strong>Сложность:</strong> {{ course[3] }}</p>
+        <p><strong>Категория:</strong> {{ course[5] }}</p>  <!-- Новое поле категории -->
     </div>
     {% endfor %}
 </div>
@@ -19,13 +35,13 @@
 <!-- Кнопки пагинации -->
 <div class="pagination">
     {% if page > 1 %}
-        <a href="{{ url_for('show_courses', page=page-1) }}">Назад</a>
+        <a href="{{ url_for('show_courses', page=page-1, query=request.args.get('query', ''), category=request.args.get('category', '')) }}">Назад</a>
     {% endif %}
 
     <span>Страница {{ page }} из {{ total_pages }}</span>
 
     {% if page < total_pages %}
-        <a href="{{ url_for('show_courses', page=page+1) }}">Вперед</a>
+        <a href="{{ url_for('show_courses', page=page+1, query=request.args.get('query', ''), category=request.args.get('category', '')) }}">Вперед</a>
     {% endif %}
 </div>
 
