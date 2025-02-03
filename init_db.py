@@ -42,6 +42,7 @@ cursor.execute('''
         content TEXT NOT NULL,
         FOREIGN KEY (chapter_id) REFERENCES chapters(id) ON DELETE CASCADE)
         ''')
+
 # Сохраняем изменения и закрываем соединение
 conn.commit()
 conn.close()
