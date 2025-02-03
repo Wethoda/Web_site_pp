@@ -26,8 +26,8 @@
     <div class="course-card">
         <h2><a href="{{ url_for('course_detail', course_id=course[0]) }}">{{ course[1] }}</a></h2>
         <p><strong>Продолжительность:</strong> {{ course[2] }}</p>
-        <p><strong>Сложность:</strong> {{ course[3] }}</p>
         <p><strong>Категория:</strong> {{ course[5] }}</p>  <!-- Новое поле категории -->
+        <p><strong>Сложность:</strong> {{ course[3] }}</p>
     </div>
     {% endfor %}
 </div>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ lesson[2] }} - Детали урока
+{% endblock %}
+
+{% block content %}
+<div class="course-card">
+    <h1>{{ lesson[2] }}</h1>  <!-- Название урока -->
+    <p><strong>Тема урока:</strong> {{ lesson[4] }}</p>  <!-- Краткое описание -->
+    <div class="lesson-content">
+        {{ lesson[3] | safe }}  <!-- Основной контент (используем | safe для сохранения HTML-форматирования) -->
+    </div>
+
+    <a href="{{ url_for('chapter_lessons', chapter_id=chapter[0]) }}">Назад к урокам</a>
+</div>
+{% endblock %}

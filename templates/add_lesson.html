@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Добавить урок
+{% endblock %}
+
+{% block content %}
+<h1>Добавить урок</h1>
+
+<form method="POST" action="{{ url_for('add_lesson_route', chapter_id=chapter_id) }}">
+    <label for="title">Название урока:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="short_description">Краткое описание:</label>
+    <textarea id="short_description" name="short_description"></textarea>
+
+    <label for="content">Основной контент:</label>
+    <textarea id="content" name="content" required></textarea>
+
+    <button type="submit">Добавить урок</button>
+</form>
+
+<a href="{{ url_for('chapter_lessons', chapter_id=chapter_id) }}">Назад к урокам</a>
+{% endblock %}

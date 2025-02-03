@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Добавить главу
+{% endblock %}
+
+{% block content %}
+<h1>Добавить главу</h1>
+
+<form method="POST" action="{{ url_for('add_chapter_route', course_id=course_id) }}">
+    <label for="title">Название главы:</label>
+    <input type="text" id="title" name="title" required>
+
+    <label for="description">Описание главы:</label>
+    <textarea id="description" name="description"></textarea>
+
+    <button type="submit">Добавить главу</button>
+</form>
+
+<a href="{{ url_for('course_chapters', course_id=course_id) }}">Назад к главам</a>
+{% endblock %}

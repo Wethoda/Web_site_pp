@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+Главы курса: {{ course[1] }}
+{% endblock %}
+
+{% block content %}
+<h1>Главы курса: {{ course[1] }}</h1>
+
+{% if 'user_id' in session and session.get('role') == 'admin' %}
+    <a href="{{ url_for('add_chapter_form', course_id=course[0]) }}">Добавить главу</a>
+{% endif %}
+
+<div>
+    {% for chapter in chapters %}
+    <div class="chapter-card">
+        <h2><a href="{{ url_for('chapter_lessons', chapter_id=chapter[0]) }}">{{ chapter[2] }}</a></h2>
+            <p>{{ chapter[3] }}</p>
+
+        <!-- Кнопка редактирования главы -->
+        {% if 'user_id' in session and session.get('role') == 'admin' %}
+            <a href="{{ url_for('edit_chapter_form', chapter_id=chapter[0]) }}" class="btn-edit">Редактировать главу</a>
+                <!-- Кнопка удаления главы -->
+            <form method="POST" action="{{ url_for('delete_chapter', chapter_id=chapter[0]) }}" style="display: inline;">
+                <button type="submit" class="btn-delete" onclick="return confirm('Вы уверены, что хотите удалить эту главу?')">Удалить главу</button>
+            </form>
+            {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+<a href="{{ url_for('show_courses') }}">Назад к курсам</a>
+{% endblock %}

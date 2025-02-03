@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Редактирование урока: {{ lesson[2] }}
+{% endblock %}
+
+{% block content %}
+<h1>Редактирование урока: {{ lesson[2] }}</h1>
+
+<form method="POST" action="{{ url_for('edit_lesson', lesson_id=lesson[0]) }}">
+    <label for="title">Название урока:</label>
+    <input type="text" id="title" name="title" value="{{ lesson[2] }}" required>
+
+    <label for="short_description">Краткое описание:</label>
+    <textarea id="short_description" name="short_description">{{ lesson[4] }}</textarea>
+
+    <label for="content">Основной контент:</label>
+    <textarea id="content" name="content" required>{{ lesson[3] }}</textarea>
+
+    <button type="submit">Сохранить изменения</button>
+</form>
+
+<a href="{{ url_for('chapter_lessons', chapter_id=lesson[1]) }}">Назад к урокам</a>
+{% endblock %}
